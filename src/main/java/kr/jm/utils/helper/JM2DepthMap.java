@@ -14,14 +14,15 @@ import java.util.function.Supplier;
  * @param <K2> the type parameter
  * @param <V>  the type parameter
  */
-public class JMNestedMap<K1, K2, V> implements Map<K1, Map<K2, V>> {
+public class JM2DepthMap<K1, K2, V> implements Map<K1, Map<K2, V>> {
 
     private Map<K1, Map<K2, V>> nestedMap;
+    private Supplier<Map<K2, V>> nestedMapGenerator;
 
     /**
      * Instantiates a new Jm nested map.
      */
-    public JMNestedMap() {
+    public JM2DepthMap() {
         this(false);
     }
 
@@ -30,7 +31,7 @@ public class JMNestedMap<K1, K2, V> implements Map<K1, Map<K2, V>> {
      *
      * @param map the map
      */
-    public JMNestedMap(Map<K1, Map<K2, V>> map) {
+    public JM2DepthMap(Map<K1, Map<K2, V>> map) {
         this(false, map);
     }
 
@@ -39,8 +40,8 @@ public class JMNestedMap<K1, K2, V> implements Map<K1, Map<K2, V>> {
      *
      * @param isWeak the is weak
      */
-    public JMNestedMap(boolean isWeak) {
-        this.nestedMap = isWeak ? new WeakHashMap<>() : new ConcurrentHashMap<>();
+    public JM2DepthMap(boolean isWeak) {
+        this(isWeak ? WeakHashMap::new : ConcurrentHashMap::new);
     }
 
     /**
@@ -49,8 +50,14 @@ public class JMNestedMap<K1, K2, V> implements Map<K1, Map<K2, V>> {
      * @param isWeak the is weak
      * @param map    the map
      */
-    public JMNestedMap(boolean isWeak, Map<K1, Map<K2, V>> map) {
-        this.nestedMap = isWeak ? new WeakHashMap<>(map) : new ConcurrentHashMap<>(map);
+    public JM2DepthMap(boolean isWeak, Map<K1, Map<K2, V>> map) {
+        this(isWeak);
+        putAll(map);
+    }
+
+    public JM2DepthMap(Supplier<Map<K2, V>> nestedMapGenerator) {
+        this.nestedMap = new ConcurrentHashMap<>();
+        this.nestedMapGenerator = nestedMapGenerator;
     }
 
     /*
@@ -131,7 +138,7 @@ public class JMNestedMap<K1, K2, V> implements Map<K1, Map<K2, V>> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        JMNestedMap<?, ?, ?> that = (JMNestedMap<?, ?, ?>) o;
+        JM2DepthMap<?, ?, ?> that = (JM2DepthMap<?, ?, ?>) o;
         return Objects.equals(nestedMap, that.nestedMap);
     }
 
@@ -187,17 +194,6 @@ public class JMNestedMap<K1, K2, V> implements Map<K1, Map<K2, V>> {
      * @return the or put get new
      */
     public Map<K2, V> getOrPutGetNew(K1 key1) {
-        return getOrPutGetNew(key1, ConcurrentHashMap::new);
-    }
-
-    /**
-     * Gets or put get new.
-     *
-     * @param key1           the key 1
-     * @param newMapSupplier the new map supplier
-     * @return the or put get new
-     */
-    public Map<K2, V> getOrPutGetNew(K1 key1, Supplier<Map<K2, V>> newMapSupplier) {
-        return JMMap.getOrPutGetNew(nestedMap, key1, newMapSupplier);
+        return JMMap.getOrPutGetNew(nestedMap, key1, nestedMapGenerator);
     }
 }

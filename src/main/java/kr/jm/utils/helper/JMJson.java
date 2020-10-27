@@ -363,6 +363,24 @@ public class JMJson {
                 typeReference);
     }
 
+    public <T> T withRestOrClasspathOrFilePath(String resourceRestUrlOrClasspathOrFilePath, Class<T> tClass) {
+        return withJsonString(
+                JMRestfulResource.getStringWithRestOrClasspathOrFilePath(resourceRestUrlOrClasspathOrFilePath), tClass);
+    }
+
+    public <T> T withRestOrFilePathOrClasspath(String resourceRestOrFilePathOrClasspath, Class<T> tClass) {
+        return withJsonString(
+                JMRestfulResource.getStringWithRestOrFilePathOrClasspath(resourceRestOrFilePathOrClasspath), tClass);
+    }
+
+    public <T> T withClasspathOrFilePath(String resourceClasspathOrFilePath, Class<T> tClass) {
+        return withJsonString(JMResources.getStringWithClasspathOrFilePath(resourceClasspathOrFilePath), tClass);
+    }
+
+    public <T> T withFilePathOrClasspath(String resourceFilePathOrClasspath, Class<T> tClass) {
+        return withJsonString(JMResources.getStringWithFilePathOrClasspath(resourceFilePathOrClasspath), tClass);
+    }
+
     /**
      * With classpath or file path t.
      *
