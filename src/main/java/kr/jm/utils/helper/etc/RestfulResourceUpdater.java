@@ -71,7 +71,7 @@ public class RestfulResourceUpdater<T> {
     public RestfulResourceUpdater(String restfulResourceUrl, int periodSeconds, long initialDelayMillis,
             Consumer<T> updateConsumer, TypeReference<T> typeReference) {
         this.restfulResourceObjectUpdater = new RestfulResourceObjectUpdater<>(restfulResourceUrl, periodSeconds,
-                initialDelayMillis, string -> JMJson.getInstance().transform(string, typeReference), updateConsumer);
+                initialDelayMillis, string -> JMJson.getInstance().withJsonString(string, typeReference),                updateConsumer);
     }
 
     /**
