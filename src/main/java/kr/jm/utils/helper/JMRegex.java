@@ -13,8 +13,7 @@ import static java.util.stream.IntStream.rangeClosed;
  * The type Jm regex.
  */
 public class JMRegex {
-    private static final org.slf4j.Logger log =
-            org.slf4j.LoggerFactory.getLogger(JMRegex.class);
+    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(JMRegex.class);
     private List<String> groupNameList;
     private Pattern pattern;
 
@@ -24,7 +23,7 @@ public class JMRegex {
      * @param regex the regex
      */
     public JMRegex(String regex) {
-        this(regex, 0);
+        this(regex, -1);
     }
 
     /**
@@ -34,12 +33,17 @@ public class JMRegex {
      * @param flag  the flag
      */
     public JMRegex(String regex, int flag) {
-        this.groupNameList = getMatchedPartList(
-                Pattern.compile("\\(\\?<\\w+>").matcher(regex)).stream()
-                .map(s -> s.substring(s.indexOf('<') + 1, s.indexOf('>')))
-                .collect(toList());
-        this.pattern = flag == 0 ? Pattern.compile(regex) : Pattern
-                .compile(regex, flag);
+        this.groupNameList = getMatchedPartList(getMatchedPartPattern().matcher(regex)).stream()
+                .map(s -> s.substring(s.indexOf('<') + 1, s.indexOf('>'))).collect(toList());
+        this.pattern = flag == -1 ? Pattern.compile(regex) : Pattern.compile(regex, flag);
+    }
+
+    private static class MatchedPartPattern {
+        private static final Pattern MATCHED_PART_PATTERN = Pattern.compile("\\(\\?<\\w+>");
+    }
+
+    private static Pattern getMatchedPartPattern() {
+        return MatchedPartPattern.MATCHED_PART_PATTERN;
     }
 
     /**
@@ -124,9 +128,7 @@ public class JMRegex {
      */
     public Map<String, String> getGroupNameValueMap(String targetString) {
         return getMatcherAsOpt(targetString)
-                .map(matcher -> groupNameList.stream()
-                        .collect(Collectors
-                                .toMap(Function.identity(), matcher::group)))
+                .map(matcher -> groupNameList.stream().collect(Collectors.toMap(Function.identity(), matcher::group)))
                 .orElseGet(Collections::emptyMap);
     }
 

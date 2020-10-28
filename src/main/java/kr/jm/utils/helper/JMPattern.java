@@ -59,4 +59,8 @@ public class JMPattern {
         return getPatternCache().computeIfAbsent(regexString, Pattern::compile);
     }
 
+    public Pattern compile(String regexString, int flags) {
+        return getPatternCache().computeIfAbsent(regexString + flags, regex -> Pattern.compile(regex, flags));
+    }
+
 }
