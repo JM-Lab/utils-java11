@@ -152,4 +152,11 @@ public interface JMArrays {
     static Object[] buildObjectArray(Object... objects) {
         return buildArray(objects);
     }
+
+    static <T> T[] add(T[] array, T element) {
+        int length = array.length;
+        array = Arrays.copyOf(array, length + 1);
+        array[length] = element;
+        return array;
+    }
 }
