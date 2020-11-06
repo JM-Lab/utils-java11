@@ -12,13 +12,13 @@ import java.util.function.Supplier;
 public class JMException {
 
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
-    private static Optional<ErrorHistoryManager> ErrorHistoryManagerAsOpt = Optional.empty();
+    private static Optional<ErrorHistoryManager> ErrorHistoryManagerOptional = Optional.empty();
 
     /**
      * Enable error history.
      */
     public static void enableErrorHistory() {
-        ErrorHistoryManagerAsOpt = Optional.of(new ErrorHistoryManager());
+        ErrorHistoryManagerOptional = Optional.of(new ErrorHistoryManager());
     }
 
     /**
@@ -26,8 +26,8 @@ public class JMException {
      *
      * @return the error history manager as opt
      */
-    public static Optional<ErrorHistoryManager> getErrorHistoryManagerAsOpt() {
-        return ErrorHistoryManagerAsOpt;
+    public static Optional<ErrorHistoryManager> getErrorHistoryManagerOptional() {
+        return ErrorHistoryManagerOptional;
     }
 
     /**
@@ -43,7 +43,7 @@ public class JMException {
             JMLog.errorForException(log, throwable, methodName, params);
         else
             JMLog.errorForException(log, throwable, methodName);
-        ErrorHistoryManagerAsOpt
+        ErrorHistoryManagerOptional
                 .ifPresent(errorHistoryManager -> errorHistoryManager.recordErrorMessageHistory(throwable));
     }
 

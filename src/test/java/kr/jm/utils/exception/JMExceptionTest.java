@@ -12,7 +12,7 @@ public class JMExceptionTest {
     private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(JMExceptionTest.class);
 
     @Test
-    public void getErrorHistoryManagerAsOpt() {
+    public void getErrorHistoryManagerOptional() {
         JMException.enableErrorHistory();
         long count = JMStream.numberRangeClosed(1, 503, 1).parallel().peek(i -> {
             try {
@@ -23,9 +23,9 @@ public class JMExceptionTest {
         }).count();
         JMThread.sleep(100);
         System.out.println(count);
-        assertTrue(JMException.getErrorHistoryManagerAsOpt().isPresent());
-        assertEquals(count, JMException.getErrorHistoryManagerAsOpt().get().getTotalErrorCount());
-        assertEquals(500, JMException.getErrorHistoryManagerAsOpt().get().getErrorMessageHistoryList().size());
+        assertTrue(JMException.getErrorHistoryManagerOptional().isPresent());
+        assertEquals(count, JMException.getErrorHistoryManagerOptional().get().getTotalErrorCount());
+        assertEquals(500, JMException.getErrorHistoryManagerOptional().get().getErrorMessageHistoryList().size());
     }
 
 }

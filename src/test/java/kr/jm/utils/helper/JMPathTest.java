@@ -70,7 +70,7 @@ public class JMPathTest {
     }
 
     @Test
-    public void testGetChildFilePathStreamAsOptPath() {
+    public void testGetChildFilePathStreamOptionalPath() {
         System.out.println(jmPath.getRootDirectoryStream());
         jmPath.getRootDirectoryStream()
                 .forEach(path -> jmPath.getChildFilePathStream(path).forEach(p -> System.out.print(p + " ")));
@@ -81,7 +81,7 @@ public class JMPathTest {
     }
 
     @Test
-    public void testGetChildDirectoryPathStreamAsOpt() {
+    public void testGetChildDirectoryPathStreamOptional() {
         System.out.println(jmPath.getRootDirectoryStream());
         jmPath.getRootDirectoryStream()
                 .forEach(path -> jmPath.getChildDirectoryPathStream(path).forEach(p -> System.out.print(p + " ")));
@@ -92,7 +92,7 @@ public class JMPathTest {
     }
 
     @Test
-    public void testGetChildrenPathStreamAsOptPath() {
+    public void testGetChildrenPathStreamOptionalPath() {
         System.out.println(jmPath.getRootDirectoryStream());
         List<String> rootChildPaths = jmPath.getRootDirectoryStream().flatMap(path -> jmPath.getChildrenPathStream(path)
                 .filter(jmPath.getDirectoryAndNotSymbolicLinkFilter().or(jmPath.getRegularFileFilter())))
@@ -115,7 +115,7 @@ public class JMPathTest {
     }
 
     @Test
-    public void testGetSubPathsStreamAsOptPath() throws Exception {
+    public void testGetSubPathsStreamOptionalPath() throws Exception {
         Path startDirectoryPath = getRoot();
         long orElse = jmPath.getChildrenPathStream(startDirectoryPath).count();
         long count = Files.walk(startDirectoryPath, 1).skip(1).count();

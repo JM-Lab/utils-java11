@@ -114,7 +114,7 @@ public class JMRegex {
      * @return the matched list by group
      */
     public List<String> getMatchedListByGroup(String targetString) {
-        return getMatcherAsOpt(targetString)
+        return getMatcherOptional(targetString)
                 .map(matcher -> rangeClosed(1, matcher.groupCount())
                         .mapToObj(matcher::group).map(Object::toString)
                         .collect(toList())).orElseGet(Collections::emptyList);
@@ -127,19 +127,19 @@ public class JMRegex {
      * @return the group name value map
      */
     public Map<String, String> getGroupNameValueMap(String targetString) {
-        return getMatcherAsOpt(targetString)
+        return getMatcherOptional(targetString)
                 .map(matcher -> groupNameList.stream().collect(Collectors.toMap(Function.identity(), matcher::group)))
                 .orElseGet(Collections::emptyMap);
     }
 
-    private Optional<Matcher> getMatcherAsOpt(String targetString) {
-        Optional<Matcher> matcherAsOpt = Optional.of(pattern.matcher(targetString)).filter(Matcher::matches);
-        if (matcherAsOpt.isEmpty()) {
+    private Optional<Matcher> getMatcherOptional(String targetString) {
+        Optional<Matcher> matcherOptional = Optional.of(pattern.matcher(targetString)).filter(Matcher::matches);
+        if (matcherOptional.isEmpty()) {
             log.warn("Wrong Match Pattern Occur !!! - pattern = {}, targetString = {}", pattern.pattern(),
                     targetString);
             return Optional.empty();
         }
-        return matcherAsOpt;
+        return matcherOptional;
     }
 
 }

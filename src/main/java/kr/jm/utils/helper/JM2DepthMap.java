@@ -5,6 +5,7 @@ import kr.jm.utils.JMOptional;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
 /**
@@ -195,5 +196,13 @@ public class JM2DepthMap<K1, K2, V> implements Map<K1, Map<K2, V>> {
      */
     public Map<K2, V> getOrPutGetNew(K1 key1) {
         return JMMap.getOrPutGetNew(nestedMap, key1, nestedMapGenerator);
+    }
+
+    public boolean containsKey(K1 key1, K2 key2) {
+        return Objects.nonNull(get(key1, key2));
+    }
+
+    public V computeIfAbsent(K1 key1, K2 key2, BiFunction<? super K1, ? super K2, ? extends V> mappingFunction) {
+        return getOrPutGetNew(key1, key2, () -> mappingFunction.apply(key1, key2));
     }
 }

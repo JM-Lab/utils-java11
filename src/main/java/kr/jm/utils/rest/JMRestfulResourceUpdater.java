@@ -100,9 +100,9 @@ public class JMRestfulResourceUpdater<T> {
      * @return the optional
      */
     public Optional<T> updateResourceWithLog() {
-        Optional<T> resourceAsOpt = updateResource();
-        log.info("Updated Resource - {}, url - {}", resourceAsOpt.isPresent() ? "YES" : "NO", restfulResourceUrl);
-        return resourceAsOpt;
+        Optional<T> resourceOptional = updateResource();
+        log.info("Updated Resource - {}, url - {}", resourceOptional.isPresent() ? "YES" : "NO", restfulResourceUrl);
+        return resourceOptional;
     }
 
     /**

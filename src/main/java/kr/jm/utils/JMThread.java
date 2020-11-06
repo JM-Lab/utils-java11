@@ -617,4 +617,21 @@ public interface JMThread {
     static ExecutorService newMaxQueueThreadPool(int maxQueue) {
         return newMaxQueueThreadPool(OS.getAvailableProcessors(), maxQueue);
     }
+
+    static void runMinutely(Runnable runnable) {
+        runEveryMillis(60_000L, runnable);
+    }
+
+    static void runEveryMillis(long millis, Runnable runnable) {
+        JMThread.runWithScheduleAtFixedRate(millis, millis, runnable);
+    }
+
+    static void runNowAndMinutely(Runnable runnable) {
+        runNowAndEveryMillis(60_000L, runnable);
+    }
+
+    static void runNowAndEveryMillis(long millis, Runnable runnable) {
+        runnable.run();
+        runEveryMillis(millis, runnable);
+    }
 }

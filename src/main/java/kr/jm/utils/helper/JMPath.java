@@ -294,7 +294,7 @@ public class JMPath {
      * @param path the path
      * @return the parent as opt
      */
-    public Optional<Path> getParentAsOpt(Path path) {
+    public Optional<Path> getParentOptional(Path path) {
         return Optional.ofNullable(path.getParent()).filter(existFilter);
     }
 
@@ -761,7 +761,7 @@ public class JMPath {
      * @param path the path
      * @return the file path extension as opt
      */
-    public Optional<String> getFilePathExtensionAsOpt(Path path) {
+    public Optional<String> getFilePathExtensionOptional(Path path) {
         return JMOptional.getNullableAndFilteredOptional(path, regularFileFilter).map(this::getLastName)
                 .map(JMString::getExtension).filter(Predicate.not(String::isEmpty));
     }
@@ -1066,14 +1066,14 @@ public class JMPath {
      * @param path the path
      * @return the optional
      */
-    public Optional<Path> createTempFilePathAsOpt(Path path) {
-        debug(log, "createTempFilePathAsOpt", path);
+    public Optional<Path> createTempFilePathOptional(Path path) {
+        debug(log, "createTempFilePathOptional", path);
         String[] prefixSuffix = JMFile.getInstance().getPrefixSuffix(path.toFile());
         try {
             return Optional.of(Files.createTempFile(prefixSuffix[0], prefixSuffix[1])).filter(existFilter)
                     .map(this::deleteOnExit);
         } catch (Exception e) {
-            return JMException.handleExceptionAndReturnEmptyOptional(log, e, "createTempFilePathAsOpt", path);
+            return JMException.handleExceptionAndReturnEmptyOptional(log, e, "createTempFilePathOptional", path);
         }
     }
 
@@ -1083,12 +1083,12 @@ public class JMPath {
      * @param path the path
      * @return the optional
      */
-    public Optional<Path> createTempDirPathAsOpt(Path path) {
-        debug(log, "createTempDirPathAsOpt", path);
+    public Optional<Path> createTempDirPathOptional(Path path) {
+        debug(log, "createTempDirPathOptional", path);
         try {
             return Optional.of(Files.createTempDirectory(path.toString())).filter(existFilter).map(this::deleteOnExit);
         } catch (Exception e) {
-            return JMException.handleExceptionAndReturnEmptyOptional(log, e, "createTempDirPathAsOpt", path);
+            return JMException.handleExceptionAndReturnEmptyOptional(log, e, "createTempDirPathOptional", path);
         }
     }
 

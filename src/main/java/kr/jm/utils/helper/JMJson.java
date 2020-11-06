@@ -210,6 +210,10 @@ public class JMJson {
         return withJsonString(jsonObjectString, mapTypeReference);
     }
 
+    public Map<String, Object> toMapWithJsonResource(String resourceClasspath) {
+        return withJsonResource(resourceClasspath, mapTypeReference);
+    }
+
     /**
      * To list list.
      *
@@ -220,15 +224,22 @@ public class JMJson {
         return withJsonString(jsonListString, listTypeReference);
     }
 
+    public List<Object> toListWithJsonResource(String resourceClasspath) {
+        return withJsonResource(resourceClasspath, listTypeReference);
+    }
+
     /**
      * To map list list.
      *
      * @param jsonMapListString the json map list string
      * @return the list
      */
-    public List<Map<String, Object>> toMapList(
-            String jsonMapListString) {
+    public List<Map<String, Object>> toMapList(String jsonMapListString) {
         return withJsonString(jsonMapListString, mapListTypeReference);
+    }
+
+    public List<Map<String, Object>> toMapListWithJsonResource(String resourceClasspath) {
+        return withJsonResource(resourceClasspath, mapListTypeReference);
     }
 
     /**

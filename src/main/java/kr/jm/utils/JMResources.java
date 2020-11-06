@@ -339,8 +339,8 @@ public interface JMResources {
      */
     static String getStringWithClasspathOrFilePath(
             String classpathOrFilePath, String charsetName) {
-        return getStringAsOptWithClasspath(classpathOrFilePath, charsetName)
-                .orElseGet(() -> getStringAsOptWithFilePath
+        return getStringOptionalWithClasspath(classpathOrFilePath, charsetName)
+                .orElseGet(() -> getStringOptionalWithFilePath
                         (classpathOrFilePath, charsetName).orElse(null));
     }
 
@@ -351,7 +351,7 @@ public interface JMResources {
      * @return the list
      */
     static List<String> readLinesWithClasspathOrFilePath(String classpathOrFilePath) {
-        return getStringListAsOptWithClasspath(classpathOrFilePath).filter(JMCollections::isNotNullOrEmpty)
+        return getStringListOptionalWithClasspath(classpathOrFilePath).filter(JMCollections::isNotNullOrEmpty)
                 .orElseGet(() -> JMFile.getInstance().readLines(classpathOrFilePath));
     }
 
@@ -361,8 +361,8 @@ public interface JMResources {
      * @param classpathOrFilePath the classpath or file path
      * @return the string list as opt with classpath
      */
-    static Optional<List<String>> getStringListAsOptWithClasspath(String classpathOrFilePath) {
-        return getResourceInputStreamAsOpt(classpathOrFilePath).map(JMInputStream::readLines);
+    static Optional<List<String>> getStringListOptionalWithClasspath(String classpathOrFilePath) {
+        return getResourceInputStreamOptional(classpathOrFilePath).map(JMInputStream::readLines);
     }
 
     /**
@@ -373,7 +373,7 @@ public interface JMResources {
      */
     static List<String> readLinesWithFilePathOrClasspath(String filePathOrClasspath) {
         return JMOptional.getOptional(JMFile.getInstance().readLines(filePathOrClasspath)).orElseGet(
-                () -> getStringListAsOptWithClasspath(filePathOrClasspath).orElseGet(Collections::emptyList));
+                () -> getStringListOptionalWithClasspath(filePathOrClasspath).orElseGet(Collections::emptyList));
     }
 
     /**
@@ -384,8 +384,8 @@ public interface JMResources {
      * @return the string with file path or classpath
      */
     static String getStringWithFilePathOrClasspath(String filePathOrClasspath, String charsetName) {
-        return getStringAsOptWithFilePath(filePathOrClasspath, charsetName)
-                .orElseGet(() -> getStringAsOptWithClasspath(filePathOrClasspath, charsetName).orElse(null));
+        return getStringOptionalWithFilePath(filePathOrClasspath, charsetName)
+                .orElseGet(() -> getStringOptionalWithClasspath(filePathOrClasspath, charsetName).orElse(null));
     }
 
     /**
@@ -405,7 +405,7 @@ public interface JMResources {
      * @param charsetName the charset name
      * @return the string as opt with file path
      */
-    static Optional<String> getStringAsOptWithFilePath(String filePath, String charsetName) {
+    static Optional<String> getStringOptionalWithFilePath(String filePath, String charsetName) {
         return JMOptional.getOptional(JMFile.getInstance().readString(filePath, charsetName));
     }
 
@@ -415,8 +415,8 @@ public interface JMResources {
      * @param filePath the file path
      * @return the string as opt with file path
      */
-    static Optional<String> getStringAsOptWithFilePath(String filePath) {
-        return getStringAsOptWithFilePath(filePath, UTF_8);
+    static Optional<String> getStringOptionalWithFilePath(String filePath) {
+        return getStringOptionalWithFilePath(filePath, UTF_8);
     }
 
     /**
@@ -426,8 +426,8 @@ public interface JMResources {
      * @param charsetName the charset name
      * @return the string as opt with classpath
      */
-    static Optional<String> getStringAsOptWithClasspath(String classpath, String charsetName) {
-        return getResourceInputStreamAsOpt(classpath)
+    static Optional<String> getStringOptionalWithClasspath(String classpath, String charsetName) {
+        return getResourceInputStreamOptional(classpath)
                 .map(resourceInputStream -> JMInputStream.toString(resourceInputStream, charsetName));
     }
 
@@ -437,8 +437,8 @@ public interface JMResources {
      * @param classpath the classpath
      * @return the string as opt with classpath
      */
-    static Optional<String> getStringAsOptWithClasspath(String classpath) {
-        return getStringAsOptWithClasspath(classpath, UTF_8);
+    static Optional<String> getStringOptionalWithClasspath(String classpath) {
+        return getStringOptionalWithClasspath(classpath, UTF_8);
     }
 
     /**
@@ -447,7 +447,7 @@ public interface JMResources {
      * @param classpath the classpath
      * @return the resource input stream as opt
      */
-    static Optional<InputStream> getResourceInputStreamAsOpt(String classpath) {
+    static Optional<InputStream> getResourceInputStreamOptional(String classpath) {
         return Optional.ofNullable(getResourceInputStream(classpath));
     }
 

@@ -119,7 +119,7 @@ public interface JMOptional {
      * @param returnBuilderFunction the return builder function
      * @return the value as opt if exist
      */
-    static <K, V, R> Optional<R> getValueAsOptIfExist(Map<K, V> map, K key,
+    static <K, V, R> Optional<R> getValueOptionalIfExist(Map<K, V> map, K key,
             Function<V, R> returnBuilderFunction) {
         return getOptional(map, key).map(returnBuilderFunction);
     }

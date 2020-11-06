@@ -16,14 +16,27 @@ public interface JMNestedMap {
         return Objects.toString(getLastObject(map, nestedSeriesKeys));
     }
 
+    static Optional<String> getLastObjectToStringOptional(Map<String, Object> map, String... nestedSeriesKeys) {
+        return getLastObjectOptional(map, nestedSeriesKeys).map(Objects::toString);
+    }
+
     static Object getLastObject(Map<String, Object> map, String... nestedSeriesKeys) {
         return nestedSeriesKeys.length == 1 ? map.get(nestedSeriesKeys[0]) : nestedSeriesKeys.length > 1 ?
                 getLastObject(map, nestedSeriesKeys.length - 1, nestedSeriesKeys) : null;
     }
 
+    static Optional<Object> getLastObjectOptional(Map<String, Object> map, String... nestedSeriesKeys) {
+        return Optional.ofNullable(getLastObject(map, nestedSeriesKeys));
+    }
+
     private static Object getLastObject(Map<String, Object> map, int lastIndex, String[] nestedSeriesKeys) {
+        return getLastObjectOptional(map, lastIndex, nestedSeriesKeys).orElse(null);
+    }
+
+    private static Optional<Object> getLastObjectOptional(Map<String, Object> map, int lastIndex,
+            String[] nestedSeriesKeys) {
         return JMOptional.getOptional(getNestedMap(map, Arrays.copyOfRange(nestedSeriesKeys, 0, lastIndex)),
-                nestedSeriesKeys[lastIndex]).orElse(null);
+                nestedSeriesKeys[lastIndex]);
     }
 
     static Map<String, Object> getNestedMap(Map<String, Object> map, String... nestedSeriesKeys) {
@@ -32,7 +45,7 @@ public interface JMNestedMap {
                 extractNestNestedSeriesKeys(nestedSeriesKeys))).orElse(null);
     }
 
-    static Optional<Map<String, Object>> getNestedMapAsOpt(Map<String, Object> map, String... nestedSeriesKeys) {
+    static Optional<Map<String, Object>> getNestedMapOptional(Map<String, Object> map, String... nestedSeriesKeys) {
         return Optional.ofNullable(getNestedMap(map, nestedSeriesKeys));
     }
 
