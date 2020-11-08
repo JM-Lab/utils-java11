@@ -24,7 +24,7 @@ public class WordNumberCollectorBundle {
         this.numberCollector = new NumberItemCollector();
     }
 
-    private WordNumberCollectorBundle() {}
+    protected WordNumberCollectorBundle() {}
 
     /**
      * Gets collector id.
