@@ -11,6 +11,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.function.Supplier;
 import java.util.zip.ZipFile;
 
 /**
@@ -471,5 +472,9 @@ public interface JMResources {
     static ResourceBundle getResourceBundle(String baseName, Locale targetLocale) {
         Locale.setDefault(targetLocale);
         return ResourceBundle.getBundle(baseName);
+    }
+
+    static String getSystemProperty(String key, Supplier<String> defaultSupplier) {
+        return System.getProperties().computeIfAbsent(key, k -> defaultSupplier.get()).toString();
     }
 }
