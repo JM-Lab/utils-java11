@@ -62,4 +62,18 @@ public interface JMNestedMap {
     private static Map<String, Object> digNestedMap(Map<String, Object> map, String key) {
         return (Map<String, Object>) map.computeIfAbsent(key, k -> new HashMap<>());
     }
+
+    static String toString(Map<String, Object> inputTargetMeta) {
+        return changeValue(inputTargetMeta).toString();
+    }
+
+    private static Object changeValue(Object o) {
+        if (o instanceof Map)
+            return digNestedValue((Map<String, Object>) o);
+        return o;
+    }
+
+    private static Map<String, Object> digNestedValue(Map<String, Object> map) {
+        return new TreeMap<>(JMMap.newChangedValueMap(map, o -> changeValue(o)));
+    }
 }
