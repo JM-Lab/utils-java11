@@ -21,8 +21,8 @@ public class JMNestedMapTest {
         Assert.assertEquals(null, JMNestedMap.getLastObject(nestedMap, "d1-2s"));
         Assert.assertEquals("lastValue", JMNestedMap.getLastObjectToString(nestedMap, "d1", "d2", "d3", "d4"));
         Assert.assertEquals("{}", JMNestedMap.getLastObjectToString(nestedMap, "d1-2", "d2-2"));
-        Assert.assertEquals("null", JMNestedMap.getLastObjectToString(nestedMap, "d1-2", "d2-2", "d2-3"));
-        Assert.assertEquals("null", JMNestedMap.getLastObjectToString(nestedMap, "key"));
+        Assert.assertNull(JMNestedMap.getLastObjectToString(nestedMap, "d1-2", "d2-2", "d2-3"));
+        Assert.assertNull(JMNestedMap.getLastObjectToString(nestedMap, "key"));
         Assert.assertEquals("lastValue", JMNestedMap.getLastObjectToString(d4Map, "d4"));
         Assert.assertEquals(null, JMNestedMap.getNestedMap(nestedMap, "d1-3", "d2-2", "d2-3"));
 

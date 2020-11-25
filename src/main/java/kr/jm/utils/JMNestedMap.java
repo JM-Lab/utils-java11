@@ -13,7 +13,7 @@ public interface JMNestedMap {
     }
 
     static String getLastObjectToString(Map<String, Object> map, String... nestedSeriesKeys) {
-        return Objects.toString(getLastObject(map, nestedSeriesKeys));
+        return getLastObjectOptional(map, nestedSeriesKeys).map(Object::toString).orElse(null);
     }
 
     static Optional<String> getLastObjectToStringOptional(Map<String, Object> map, String... nestedSeriesKeys) {
