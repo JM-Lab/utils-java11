@@ -9,19 +9,19 @@ import java.util.Map;
 import java.util.Optional;
 
 /**
- * The type Word count metrics.
+ * The type Word count.
  */
 public class WordCount extends JM2DepthMap<String, String, Long> {
 
     /**
-     * Instantiates a new Word count metrics.
+     * Instantiates a new Word count.
      */
     public WordCount() {
         super();
     }
 
     /**
-     * Instantiates a new Word count metrics.
+     * Instantiates a new Word count.
      *
      * @param metricsMap the metrics map
      */
@@ -30,10 +30,10 @@ public class WordCount extends JM2DepthMap<String, String, Long> {
     }
 
     /**
-     * Merge all word count metrics.
+     * Merge all word count.
      *
      * @param numberListMapList the number list map list
-     * @return the word count metrics
+     * @return the word count
      */
     public static WordCount mergeAll(List<WordCount> numberListMapList) {
         return numberListMapList.stream().reduce(new WordCount(), WordCount::merge);
@@ -50,10 +50,10 @@ public class WordCount extends JM2DepthMap<String, String, Long> {
     }
 
     /**
-     * Merge word count metrics.
+     * Merge word count.
      *
-     * @param wordCount the word count metrics
-     * @return the word count metrics
+     * @param wordCount the word count
+     * @return the word count
      */
     public WordCount merge(WordCount wordCount) {
         wordCount.forEach(this::merge);

@@ -153,6 +153,14 @@ public interface JMArrays {
         return buildArray(objects);
     }
 
+    /**
+     * Add t [ ].
+     *
+     * @param <T>     the type parameter
+     * @param array   the array
+     * @param element the element
+     * @return the t [ ]
+     */
     static <T> T[] add(T[] array, T element) {
         int length = array.length;
         array = Arrays.copyOf(array, length + 1);

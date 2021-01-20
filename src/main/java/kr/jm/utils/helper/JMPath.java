@@ -289,10 +289,10 @@ public class JMPath {
     }
 
     /**
-     * Gets parent as opt.
+     * Gets parent optional.
      *
      * @param path the path
-     * @return the parent as opt
+     * @return the parent optional
      */
     public Optional<Path> getParentOptional(Path path) {
         return Optional.ofNullable(path.getParent()).filter(existFilter);
@@ -756,10 +756,10 @@ public class JMPath {
     }
 
     /**
-     * Gets file path extension as opt.
+     * Gets file path extension optional.
      *
      * @param path the path
-     * @return the file path extension as opt
+     * @return the file path extension optional
      */
     public Optional<String> getFilePathExtensionOptional(Path path) {
         return JMOptional.getNullableAndFilteredOptional(path, regularFileFilter).map(this::getLastName)
@@ -1061,7 +1061,7 @@ public class JMPath {
     }
 
     /**
-     * Create temp file path as opt optional.
+     * Create temp file path optional optional.
      *
      * @param path the path
      * @return the optional
@@ -1078,7 +1078,7 @@ public class JMPath {
     }
 
     /**
-     * Create temp dir path as opt optional.
+     * Create temp dir path optional optional.
      *
      * @param path the path
      * @return the optional

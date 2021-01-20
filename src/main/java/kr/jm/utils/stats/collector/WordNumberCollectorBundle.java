@@ -24,6 +24,9 @@ public class WordNumberCollectorBundle {
         this.numberCollector = new NumberItemCollector();
     }
 
+    /**
+     * Instantiates a new Word number collector bundle.
+     */
     protected WordNumberCollectorBundle() {}
 
     /**

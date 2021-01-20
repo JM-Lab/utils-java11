@@ -8,7 +8,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * The type Jm count map.
+ * The type Count map.
  *
  * @param <V> the type parameter
  */
@@ -17,14 +17,14 @@ public class CountMap<V> implements Map<V, Long> {
     private final Map<V, Long> countMap;
 
     /**
-     * Instantiates a new Jm count map.
+     * Instantiates a new Count map.
      */
     public CountMap() {
         this.countMap = new ConcurrentHashMap<>();
     }
 
     /**
-     * Instantiates a new Jm count map.
+     * Instantiates a new Count map.
      *
      * @param map the map
      */
@@ -146,10 +146,10 @@ public class CountMap<V> implements Map<V, Long> {
     }
 
     /**
-     * Merge jm count map.
+     * Merge count map.
      *
-     * @param countMap the jm count map
-     * @return the jm count map
+     * @param countMap the count map
+     * @return the count map
      */
     public CountMap<V> merge(CountMap<V> countMap) {
         synchronized (this.countMap) {

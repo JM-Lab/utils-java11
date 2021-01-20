@@ -93,9 +93,9 @@ public class RestfulResourceUpdater<T> {
     }
 
     /**
-     * Gets cached json string.
+     * Gets cached string.
      *
-     * @return the cached json string
+     * @return the cached string
      */
     public String getCachedString() {
         return this.restfulResourceObjectUpdater.getCachedString();
@@ -110,6 +110,11 @@ public class RestfulResourceUpdater<T> {
         return this.restfulResourceObjectUpdater.getCachedResource();
     }
 
+    /**
+     * Sets restful resource url.
+     *
+     * @param restfulResourceUrl the restful resource url
+     */
     public void setRestfulResourceUrl(String restfulResourceUrl) {
         this.restfulResourceObjectUpdater.setRestfulResourceUrl(restfulResourceUrl);
     }

@@ -6,19 +6,19 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The type Number stats metrics.
+ * The type Number stats.
  */
 public class NumberStats extends JM2DepthMap<String, String, Number> {
 
     /**
-     * Instantiates a new Number stats metrics.
+     * Instantiates a new Number stats.
      */
     public NumberStats() {
         super();
     }
 
     /**
-     * Instantiates a new Number stats metrics.
+     * Instantiates a new Number stats.
      *
      * @param metricsMap the metrics map
      */
@@ -40,10 +40,10 @@ public class NumberStats extends JM2DepthMap<String, String, Number> {
     }
 
     /**
-     * Merge number stats metrics.
+     * Merge number stats.
      *
      * @param statsNumberMap the stats number map
-     * @return the number stats metrics
+     * @return the number stats
      */
     public NumberStats merge(NumberStats statsNumberMap) {
         statsNumberMap.forEach(this::merge);
@@ -51,10 +51,10 @@ public class NumberStats extends JM2DepthMap<String, String, Number> {
     }
 
     /**
-     * Merge all number stats metrics.
+     * Merge all number stats.
      *
-     * @param numberStatsList the number stats metrics list
-     * @return the number stats metrics
+     * @param numberStatsList the number stats list
+     * @return the number stats
      */
     public static NumberStats mergeAll(List<NumberStats> numberStatsList) {
         return numberStatsList.stream()

@@ -22,9 +22,9 @@ public class JMException {
     }
 
     /**
-     * Gets error history manager as opt.
+     * Gets error history manager optional.
      *
-     * @return the error history manager as opt
+     * @return the error history manager optional
      */
     public static Optional<ErrorHistoryManager> getErrorHistoryManagerOptional() {
         return ErrorHistoryManagerOptional;

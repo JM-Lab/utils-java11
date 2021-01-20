@@ -210,6 +210,12 @@ public class JMJson {
         return withJsonString(jsonObjectString, mapTypeReference);
     }
 
+    /**
+     * To map with json resource map.
+     *
+     * @param resourceClasspath the resource classpath
+     * @return the map
+     */
     public Map<String, Object> toMapWithJsonResource(String resourceClasspath) {
         return withJsonResource(resourceClasspath, mapTypeReference);
     }
@@ -224,6 +230,12 @@ public class JMJson {
         return withJsonString(jsonListString, listTypeReference);
     }
 
+    /**
+     * To list with json resource list.
+     *
+     * @param resourceClasspath the resource classpath
+     * @return the list
+     */
     public List<Object> toListWithJsonResource(String resourceClasspath) {
         return withJsonResource(resourceClasspath, listTypeReference);
     }
@@ -238,6 +250,12 @@ public class JMJson {
         return withJsonString(jsonMapListString, mapListTypeReference);
     }
 
+    /**
+     * To map list with json resource list.
+     *
+     * @param resourceClasspath the resource classpath
+     * @return the list
+     */
     public List<Map<String, Object>> toMapListWithJsonResource(String resourceClasspath) {
         return withJsonResource(resourceClasspath, mapListTypeReference);
     }
@@ -374,20 +392,52 @@ public class JMJson {
                 typeReference);
     }
 
+    /**
+     * With rest or classpath or file path t.
+     *
+     * @param <T>                                  the type parameter
+     * @param resourceRestUrlOrClasspathOrFilePath the resource rest url or classpath or file path
+     * @param tClass                               the t class
+     * @return the t
+     */
     public <T> T withRestOrClasspathOrFilePath(String resourceRestUrlOrClasspathOrFilePath, Class<T> tClass) {
         return withJsonString(
                 JMRestfulResource.getStringWithRestOrClasspathOrFilePath(resourceRestUrlOrClasspathOrFilePath), tClass);
     }
 
+    /**
+     * With rest or file path or classpath t.
+     *
+     * @param <T>                               the type parameter
+     * @param resourceRestOrFilePathOrClasspath the resource rest or file path or classpath
+     * @param tClass                            the t class
+     * @return the t
+     */
     public <T> T withRestOrFilePathOrClasspath(String resourceRestOrFilePathOrClasspath, Class<T> tClass) {
         return withJsonString(
                 JMRestfulResource.getStringWithRestOrFilePathOrClasspath(resourceRestOrFilePathOrClasspath), tClass);
     }
 
+    /**
+     * With classpath or file path t.
+     *
+     * @param <T>                         the type parameter
+     * @param resourceClasspathOrFilePath the resource classpath or file path
+     * @param tClass                      the t class
+     * @return the t
+     */
     public <T> T withClasspathOrFilePath(String resourceClasspathOrFilePath, Class<T> tClass) {
         return withJsonString(JMResources.getStringWithClasspathOrFilePath(resourceClasspathOrFilePath), tClass);
     }
 
+    /**
+     * With file path or classpath t.
+     *
+     * @param <T>                         the type parameter
+     * @param resourceFilePathOrClasspath the resource file path or classpath
+     * @param tClass                      the t class
+     * @return the t
+     */
     public <T> T withFilePathOrClasspath(String resourceFilePathOrClasspath, Class<T> tClass) {
         return withJsonString(JMResources.getStringWithFilePathOrClasspath(resourceFilePathOrClasspath), tClass);
     }

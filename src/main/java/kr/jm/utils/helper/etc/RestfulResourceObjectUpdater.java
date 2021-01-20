@@ -1,12 +1,16 @@
 package kr.jm.utils.helper.etc;
 
 import kr.jm.utils.JMOptional;
-import org.slf4j.Logger;
 
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+/**
+ * The type Restful resource object updater.
+ *
+ * @param <T> the type parameter
+ */
 public class RestfulResourceObjectUpdater<T> {
     private RestfulResourceStringUpdater restfulResourceStringUpdater;
     private Function<String, T> transformer;
@@ -14,41 +18,60 @@ public class RestfulResourceObjectUpdater<T> {
     private T cachedResource;
 
     /**
-     * Instantiates a new Restful resource updater.
+     * Instantiates a new Restful resource object updater.
      *
      * @param restfulResourceUrl the restful resource url
+     * @param transformer        the transformer
      */
     public RestfulResourceObjectUpdater(String restfulResourceUrl, Function<String, T> transformer) {
         this(restfulResourceUrl, 0, transformer);
     }
 
+    /**
+     * Instantiates a new Restful resource object updater.
+     *
+     * @param restfulResourceUrl the restful resource url
+     * @param transformer        the transformer
+     * @param updateConsumer     the update consumer
+     */
     public RestfulResourceObjectUpdater(String restfulResourceUrl, Function<String, T> transformer,
             Consumer<T> updateConsumer) {
         this(restfulResourceUrl, 0, 0, transformer, updateConsumer);
     }
 
     /**
-     * Instantiates a new Restful resource updater.
+     * Instantiates a new Restful resource object updater.
      *
      * @param restfulResourceUrl the restful resource url
      * @param periodSeconds      the period seconds
+     * @param transformer        the transformer
      */
     public RestfulResourceObjectUpdater(String restfulResourceUrl, int periodSeconds,
             Function<String, T> transformer) {
         this(restfulResourceUrl, periodSeconds, 0, transformer);
     }
 
+    /**
+     * Instantiates a new Restful resource object updater.
+     *
+     * @param restfulResourceUrl the restful resource url
+     * @param periodSeconds      the period seconds
+     * @param initialDelayMillis the initial delay millis
+     * @param transformer        the transformer
+     */
     public RestfulResourceObjectUpdater(String restfulResourceUrl, int periodSeconds, long initialDelayMillis,
             Function<String, T> transformer) {
         this(restfulResourceUrl, periodSeconds, initialDelayMillis, transformer, null);
     }
 
     /**
-     * Instantiates a new Restful resource updater.
+     * Instantiates a new Restful resource object updater.
      *
      * @param restfulResourceUrl the restful resource url
      * @param periodSeconds      the period seconds
      * @param initialDelayMillis the initial delay millis
+     * @param transformer        the transformer
+     * @param updateConsumer     the update consumer
      */
     public RestfulResourceObjectUpdater(String restfulResourceUrl, int periodSeconds, long initialDelayMillis,
             Function<String, T> transformer, Consumer<T> updateConsumer) {
@@ -86,9 +109,9 @@ public class RestfulResourceObjectUpdater<T> {
     }
 
     /**
-     * Gets cached json string.
+     * Gets cached string.
      *
-     * @return the cached json string
+     * @return the cached string
      */
     public String getCachedString() {
         return this.restfulResourceStringUpdater.getCachedString();
@@ -103,8 +126,13 @@ public class RestfulResourceObjectUpdater<T> {
         return this.cachedResource;
     }
 
+    /**
+     * Sets restful resource url.
+     *
+     * @param restfulResourceUrl the restful resource url
+     */
     public void setRestfulResourceUrl(String restfulResourceUrl) {
         this.restfulResourceStringUpdater.setRestfulResourceUrl(restfulResourceUrl);
     }
 
-    }
+}

@@ -11,6 +11,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
+/**
+ * The type Restful resource string updater.
+ */
 public class RestfulResourceStringUpdater {
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(RestfulResourceStringUpdater.class);
     private String restfulResourceUrl;
@@ -18,7 +21,7 @@ public class RestfulResourceStringUpdater {
     private String cachedString;
 
     /**
-     * Instantiates a new Restful resource updater.
+     * Instantiates a new Restful resource string updater.
      *
      * @param restfulResourceUrl the restful resource url
      */
@@ -27,7 +30,7 @@ public class RestfulResourceStringUpdater {
     }
 
     /**
-     * Instantiates a new Restful resource updater.
+     * Instantiates a new Restful resource string updater.
      *
      * @param restfulResourceUrl the restful resource url
      * @param periodSeconds      the period seconds
@@ -37,7 +40,7 @@ public class RestfulResourceStringUpdater {
     }
 
     /**
-     * Instantiates a new Restful resource updater.
+     * Instantiates a new Restful resource string updater.
      *
      * @param restfulResourceUrl the restful resource url
      * @param periodSeconds      the period seconds
@@ -48,7 +51,7 @@ public class RestfulResourceStringUpdater {
     }
 
     /**
-     * Instantiates a new Restful resource updater.
+     * Instantiates a new Restful resource string updater.
      *
      * @param restfulResourceUrl the restful resource url
      * @param periodSeconds      the period seconds
@@ -68,12 +71,17 @@ public class RestfulResourceStringUpdater {
         }
     }
 
+    /**
+     * Sets restful resource url.
+     *
+     * @param restfulResourceUrl the restful resource url
+     */
     public void setRestfulResourceUrl(String restfulResourceUrl) {
         this.restfulResourceUrl = restfulResourceUrl;
     }
 
     /**
-     * Update resource with log optional.
+     * Update resource optional.
      *
      * @return the optional
      */
@@ -102,9 +110,9 @@ public class RestfulResourceStringUpdater {
     }
 
     /**
-     * Gets cached json string.
+     * Gets cached string.
      *
-     * @return the cached json string
+     * @return the cached string
      */
     public String getCachedString() {
         return cachedString;

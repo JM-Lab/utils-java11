@@ -9,7 +9,7 @@ import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
 /**
- * The type Jm nested map.
+ * The type Jm 2 depth map.
  *
  * @param <K1> the type parameter
  * @param <K2> the type parameter
@@ -21,14 +21,14 @@ public class JM2DepthMap<K1, K2, V> implements Map<K1, Map<K2, V>> {
     private Supplier<Map<K2, V>> nestedMapGenerator;
 
     /**
-     * Instantiates a new Jm nested map.
+     * Instantiates a new Jm 2 depth map.
      */
     public JM2DepthMap() {
         this(false);
     }
 
     /**
-     * Instantiates a new Jm nested map.
+     * Instantiates a new Jm 2 depth map.
      *
      * @param map the map
      */
@@ -37,7 +37,7 @@ public class JM2DepthMap<K1, K2, V> implements Map<K1, Map<K2, V>> {
     }
 
     /**
-     * Instantiates a new Jm nested map.
+     * Instantiates a new Jm 2 depth map.
      *
      * @param isWeak the is weak
      */
@@ -46,7 +46,7 @@ public class JM2DepthMap<K1, K2, V> implements Map<K1, Map<K2, V>> {
     }
 
     /**
-     * Instantiates a new Jm nested map.
+     * Instantiates a new Jm 2 depth map.
      *
      * @param isWeak the is weak
      * @param map    the map
@@ -56,6 +56,11 @@ public class JM2DepthMap<K1, K2, V> implements Map<K1, Map<K2, V>> {
         putAll(map);
     }
 
+    /**
+     * Instantiates a new Jm 2 depth map.
+     *
+     * @param nestedMapGenerator the nested map generator
+     */
     public JM2DepthMap(Supplier<Map<K2, V>> nestedMapGenerator) {
         this.nestedMap = new ConcurrentHashMap<>();
         this.nestedMapGenerator = nestedMapGenerator;
@@ -198,10 +203,25 @@ public class JM2DepthMap<K1, K2, V> implements Map<K1, Map<K2, V>> {
         return JMMap.getOrPutGetNew(nestedMap, key1, nestedMapGenerator);
     }
 
+    /**
+     * Contains key boolean.
+     *
+     * @param key1 the key 1
+     * @param key2 the key 2
+     * @return the boolean
+     */
     public boolean containsKey(K1 key1, K2 key2) {
         return Objects.nonNull(get(key1, key2));
     }
 
+    /**
+     * Compute if absent v.
+     *
+     * @param key1            the key 1
+     * @param key2            the key 2
+     * @param mappingFunction the mapping function
+     * @return the v
+     */
     public V computeIfAbsent(K1 key1, K2 key2, BiFunction<? super K1, ? super K2, ? extends V> mappingFunction) {
         return getOrPutGetNew(key1, key2, () -> mappingFunction.apply(key1, key2));
     }

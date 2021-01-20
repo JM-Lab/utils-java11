@@ -618,18 +618,40 @@ public interface JMThread {
         return newMaxQueueThreadPool(OS.getAvailableProcessors(), maxQueue);
     }
 
+    /**
+     * Run minutely.
+     *
+     * @param runnable the runnable
+     */
     static void runMinutely(Runnable runnable) {
         runEveryMillis(60_000L, runnable);
     }
 
+    /**
+     * Run every millis.
+     *
+     * @param millis   the millis
+     * @param runnable the runnable
+     */
     static void runEveryMillis(long millis, Runnable runnable) {
         JMThread.runWithScheduleAtFixedRate(millis, millis, runnable);
     }
 
+    /**
+     * Run now and minutely.
+     *
+     * @param runnable the runnable
+     */
     static void runNowAndMinutely(Runnable runnable) {
         runNowAndEveryMillis(60_000L, runnable);
     }
 
+    /**
+     * Run now and every millis.
+     *
+     * @param millis   the millis
+     * @param runnable the runnable
+     */
     static void runNowAndEveryMillis(long millis, Runnable runnable) {
         runnable.run();
         runEveryMillis(millis, runnable);

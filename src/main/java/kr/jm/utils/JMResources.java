@@ -357,10 +357,10 @@ public interface JMResources {
     }
 
     /**
-     * Gets string list as opt with classpath.
+     * Gets string list optional with classpath.
      *
      * @param classpathOrFilePath the classpath or file path
-     * @return the string list as opt with classpath
+     * @return the string list optional with classpath
      */
     static Optional<List<String>> getStringListOptionalWithClasspath(String classpathOrFilePath) {
         return getResourceInputStreamOptional(classpathOrFilePath).map(JMInputStream::readLines);
@@ -400,32 +400,32 @@ public interface JMResources {
     }
 
     /**
-     * Gets string as opt with file path.
+     * Gets string optional with file path.
      *
      * @param filePath    the file path
      * @param charsetName the charset name
-     * @return the string as opt with file path
+     * @return the string optional with file path
      */
     static Optional<String> getStringOptionalWithFilePath(String filePath, String charsetName) {
         return JMOptional.getOptional(JMFile.getInstance().readString(filePath, charsetName));
     }
 
     /**
-     * Gets string as opt with file path.
+     * Gets string optional with file path.
      *
      * @param filePath the file path
-     * @return the string as opt with file path
+     * @return the string optional with file path
      */
     static Optional<String> getStringOptionalWithFilePath(String filePath) {
         return getStringOptionalWithFilePath(filePath, UTF_8);
     }
 
     /**
-     * Gets string as opt with classpath.
+     * Gets string optional with classpath.
      *
      * @param classpath   the classpath
      * @param charsetName the charset name
-     * @return the string as opt with classpath
+     * @return the string optional with classpath
      */
     static Optional<String> getStringOptionalWithClasspath(String classpath, String charsetName) {
         return getResourceInputStreamOptional(classpath)
@@ -433,20 +433,20 @@ public interface JMResources {
     }
 
     /**
-     * Gets string as opt with classpath.
+     * Gets string optional with classpath.
      *
      * @param classpath the classpath
-     * @return the string as opt with classpath
+     * @return the string optional with classpath
      */
     static Optional<String> getStringOptionalWithClasspath(String classpath) {
         return getStringOptionalWithClasspath(classpath, UTF_8);
     }
 
     /**
-     * Gets resource input stream as opt.
+     * Gets resource input stream optional.
      *
      * @param classpath the classpath
-     * @return the resource input stream as opt
+     * @return the resource input stream optional
      */
     static Optional<InputStream> getResourceInputStreamOptional(String classpath) {
         return Optional.ofNullable(getResourceInputStream(classpath));
@@ -474,6 +474,13 @@ public interface JMResources {
         return ResourceBundle.getBundle(baseName);
     }
 
+    /**
+     * Gets system property.
+     *
+     * @param key             the key
+     * @param defaultSupplier the default supplier
+     * @return the system property
+     */
     static String getSystemProperty(String key, Supplier<String> defaultSupplier) {
         return System.getProperties().computeIfAbsent(key, k -> defaultSupplier.get()).toString();
     }
