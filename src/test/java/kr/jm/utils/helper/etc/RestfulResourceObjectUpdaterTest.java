@@ -7,7 +7,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import kr.jm.utils.JMThread;
 import kr.jm.utils.helper.JMJson;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,11 +30,6 @@ public class RestfulResourceObjectUpdaterTest {
                 new RestfulResourceObjectUpdater<>("testRestfulJsonResource.json", 2, 0,
                         s -> jmObjectMapper.withJsonString(s, new TypeReference<>() {}), map -> updateResource = map);
         JMThread.sleep(1000);
-    }
-
-    @After
-    public void tearDown() throws Exception {
-//        restfulResourceObjectUpdater.stop(false);
     }
 
     @Test
