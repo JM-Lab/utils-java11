@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class JMStringTest {
 
@@ -83,4 +83,27 @@ public class JMStringTest {
         assertEquals("0.0", JMString.roundedNumberFormat(0.00000001, 1));
     }
 
+    @Test
+    public void isNumber() {
+        assertTrue(JMString.isNumber("10003234"));
+        assertTrue(JMString.isNumber("-100032342344245"));
+        assertTrue(JMString.isNumber("+10003234"));
+        assertTrue(JMString.isNumber("1000.3234"));
+        assertTrue(JMString.isNumber("-1000.32342344245"));
+        assertTrue(JMString.isNumber("+1000.3234"));
+        assertTrue(JMString.isNumber("3.0878E7"));
+        assertTrue(JMString.isNumber("-3.0878E7"));
+    }
+
+    @Test
+    public void isDecimalNumber() {
+        assertTrue(JMString.isDecimalNumber("10003234"));
+        assertTrue(JMString.isDecimalNumber("-100032342344245"));
+        assertTrue(JMString.isDecimalNumber("+10003234"));
+        assertTrue(JMString.isDecimalNumber("1000.3234"));
+        assertTrue(JMString.isDecimalNumber("-1000.32342344245"));
+        assertTrue(JMString.isDecimalNumber("+1000.3234"));
+        assertFalse(JMString.isDecimalNumber("3.0878E7"));
+        assertFalse(JMString.isDecimalNumber("-3.0878E7"));
+    }
 }

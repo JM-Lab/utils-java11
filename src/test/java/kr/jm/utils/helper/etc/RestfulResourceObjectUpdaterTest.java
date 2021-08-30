@@ -43,7 +43,7 @@ public class RestfulResourceObjectUpdaterTest {
                 updateResource.stream().map(map -> map.get("maxBytes")).mapToInt(l -> (int) l).sum());
 
         restfulResourceObjectUpdater.setRestfulResourceUrl("testRestfulJsonResource2.json");
-        JMThread.sleep(1000);
+        JMThread.sleep(2000);
         System.out.println(updateResource);
         assertEquals(restfulResourceObjectUpdater.getCachedResource().toString(), updateResource.toString());
         assertTrue(restfulResourceObjectUpdater.getCachedString().contains("PREMIUM2"));

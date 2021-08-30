@@ -32,12 +32,12 @@ public class JMPattern {
     }
 
     /**
-     * Gets number pattern.
+     * Gets decimal number pattern.
      *
-     * @return the number pattern
+     * @return the decimal number pattern
      */
-    public Pattern getNumberPattern() {
-        return compile(JMString.NumberPattern);
+    public Pattern getDecimalNumberPattern() {
+        return compile(JMString.DecimalNumberPattern);
     }
 
     /**

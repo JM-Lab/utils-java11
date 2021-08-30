@@ -34,9 +34,9 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>11</java.version>
-        <slf4j.version>1.7.30</slf4j.version>
-        <junit.version>4.13.1</junit.version>
-        <jackson-databind.version>2.12.1</jackson-databind.version>
+        <slf4j.version>1.7.32</slf4j.version>
+        <junit.version>4.13.2</junit.version>
+        <jackson-databind.version>2.12.5</jackson-databind.version>
         <httpclient.version>4.5.13</httpclient.version>
     </properties>
 

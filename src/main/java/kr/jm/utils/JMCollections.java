@@ -276,6 +276,13 @@ public interface JMCollections {
         return new HashMap<>(initMap);
     }
 
+    /**
+     * Zip list.
+     *
+     * @param <T>   the type parameter
+     * @param lists the lists
+     * @return the list
+     */
     static <T> List<List<T>> zip(List<T>... lists) {
         // ex) [1, 2, 3], [4, 5, 6] -> [[1, 4], [2, 5], [3, 6]]
         // ex) [1], [4, 5, 6], [7, 8] -> [[1, 4, 7], [5, 8], [6]]
@@ -293,6 +300,13 @@ public interface JMCollections {
         return zipped;
     }
 
+    /**
+     * Generate permutations list.
+     *
+     * @param <T>   the type parameter
+     * @param lists the lists
+     * @return the list
+     */
     static <T> List<List<T>> generatePermutations(List<T>... lists) {
         ArrayList<List<T>> result = new ArrayList<>();
         generatePermutations(lists, result, 0, new ArrayList<>());

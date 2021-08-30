@@ -72,9 +72,9 @@ public interface JMString {
     String IPV6Pattern =
             "([0-9a-f]{1,4}:){7}([0-9a-f]){1,4}";
     /**
-     * The constant NumberPattern.
+     * The constant DecimalNumberPattern.
      */
-    String NumberPattern = "[+-]?\\d+(\\.\\d+)?";
+    String DecimalNumberPattern = "[+-]?\\d+(\\.\\d+)?";
     /**
      * The constant WordPattern.
      */
@@ -87,7 +87,22 @@ public interface JMString {
      * @return the boolean
      */
     static boolean isNumber(String numberString) {
-        return JMPattern.getInstance().getNumberPattern().matcher(numberString).matches();
+        try {
+            Double.parseDouble(numberString);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
+     * Is decimal number boolean.
+     *
+     * @param numberString the number string
+     * @return the boolean
+     */
+    static boolean isDecimalNumber(String numberString) {
+        return JMPattern.getInstance().getDecimalNumberPattern().matcher(numberString).matches();
     }
 
     /**
