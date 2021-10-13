@@ -70,4 +70,15 @@ public class JMPattern {
         return getPatternCache().computeIfAbsent(regexString + flags, regex -> Pattern.compile(regex, flags));
     }
 
+    /**
+     * Matches boolean.
+     *
+     * @param regex        the regex
+     * @param targetString the target string
+     * @return the boolean
+     */
+    public boolean matches(String regex, String targetString) {
+        return compile(regex).matcher(targetString).matches();
+    }
+
 }
