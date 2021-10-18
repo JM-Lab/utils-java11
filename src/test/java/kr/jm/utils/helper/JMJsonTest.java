@@ -41,4 +41,22 @@ public class JMJsonTest {
                         new TypeReference<Map.Entry<String, List<Map.Entry<String, Object>>>>() {}).toString());
 
     }
+
+    @Test
+    public void copyMap() {
+        Map<String, List<Map.Entry<String, String>>> listMap =
+                Map.of("a", List.of(Map.entry("1", "2"), Map.entry("3", "4"),
+                        Map.entry("5", "6"), Map.entry("7", "8")));
+        JMJson jmJson = JMJson.getInstance();
+        String testString = jmJson.toJsonString(listMap);
+        System.out.println(testString);
+        System.out.println(jmJson.withJsonString(testString,
+                new TypeReference<Map<String, List<Map.Entry<String, Object>>>>() {}));
+        Assert.assertEquals(listMap.toString(),
+                jmJson.withJsonString(testString,
+                        new TypeReference<Map<String, List<Map.Entry<String, Object>>>>() {}).toString());
+        Map<String, List<Map.Entry<String, String>>> copyMap = jmJson.copyMap(listMap);
+        Assert.assertEquals(jmJson.toJsonString(listMap), jmJson.toJsonString(copyMap));
+        Assert.assertNotEquals(listMap.get("a"), copyMap.get("a"));
+    }
 }

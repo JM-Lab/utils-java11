@@ -512,6 +512,18 @@ public class JMJson {
     }
 
     /**
+     * Copy map map.
+     *
+     * @param <K> the type parameter
+     * @param <V> the type parameter
+     * @param map the map
+     * @return the map
+     */
+    public <K, V> Map<K, V> copyMap(Map<K, V> map) {
+        return withJsonString(toJsonString(map), new TypeReference<>() {});
+    }
+
+    /**
      * To pretty string string.
      *
      * @param jsonString the json string
