@@ -1,4 +1,4 @@
-package kr.jm.utils.helper.etc;
+package kr.jm.utils.rest;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;

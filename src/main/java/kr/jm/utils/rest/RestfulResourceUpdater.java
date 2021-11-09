@@ -1,8 +1,11 @@
-package kr.jm.utils.helper.etc;
+package kr.jm.utils.rest;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import kr.jm.utils.helper.JMJson;
-import org.slf4j.Logger;
 
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -13,7 +16,10 @@ import java.util.function.Consumer;
  * @param <T> the type parameter
  */
 public class RestfulResourceUpdater<T> {
-    private static final Logger log = org.slf4j.LoggerFactory.getLogger(RestfulResourceObjectUpdater.class);
+    private JMJson jmJson = new JMJson(new ObjectMapper().disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+            .disable(SerializationFeature.FAIL_ON_EMPTY_BEANS)
+            .enable(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL)
+            .configure(JsonParser.Feature.ALLOW_COMMENTS, true));
     private RestfulResourceObjectUpdater<T> restfulResourceObjectUpdater;
 
     /**
@@ -22,7 +28,7 @@ public class RestfulResourceUpdater<T> {
      * @param restfulResourceUrl the restful resource url
      */
     public RestfulResourceUpdater(String restfulResourceUrl) {
-        this(restfulResourceUrl, 0);
+        this(restfulResourceUrl, 60);
     }
 
     /**
@@ -71,7 +77,7 @@ public class RestfulResourceUpdater<T> {
     public RestfulResourceUpdater(String restfulResourceUrl, int periodSeconds, long initialDelayMillis,
             Consumer<T> updateConsumer, TypeReference<T> typeReference) {
         this.restfulResourceObjectUpdater = new RestfulResourceObjectUpdater<>(restfulResourceUrl, periodSeconds,
-                initialDelayMillis, string -> JMJson.getInstance().withJsonString(string, typeReference),                updateConsumer);
+                initialDelayMillis, string -> jmJson.withJsonString(string, typeReference), updateConsumer);
     }
 
     /**

@@ -1,5 +1,4 @@
 [
-  // test comments
   {
     "priceType": "FREE",
     "maxCount":  200000,
@@ -9,7 +8,7 @@
     "priceType": "PREMIUM",
     "maxCount":  100,
     "maxBytes":  104857601
-  },
+  },// test comments
   {
     "priceType": "PREMIUM",
     "maxCount":  1000000,

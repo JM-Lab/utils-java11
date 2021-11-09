@@ -1,15 +1,17 @@
-package kr.jm.utils.helper.etc;
+package kr.jm.utils.rest;
 
 import kr.jm.utils.JMOptional;
 import kr.jm.utils.JMRestfulResource;
+import kr.jm.utils.JMString;
 import kr.jm.utils.JMThread;
 import kr.jm.utils.exception.JMException;
+import kr.jm.utils.helper.JMLog;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
-import java.util.function.Predicate;
 
 /**
  * The type Restful resource string updater.
@@ -26,7 +28,7 @@ public class RestfulResourceStringUpdater {
      * @param restfulResourceUrl the restful resource url
      */
     public RestfulResourceStringUpdater(String restfulResourceUrl) {
-        this(restfulResourceUrl, 0);
+        this(restfulResourceUrl, 60);
     }
 
     /**
@@ -62,13 +64,14 @@ public class RestfulResourceStringUpdater {
             Consumer<String> updateConsumer) {
         setRestfulResourceUrl(restfulResourceUrl);
         this.updateConsumer = updateConsumer;
-        if (initialDelayMillis == 0)
+        if (initialDelayMillis <= 0)
             updateResource();
-        if (periodSeconds > 0) {
-            long periodMillis = TimeUnit.SECONDS.toMillis(periodSeconds);
-            JMThread.runWithScheduleAtFixedRate(initialDelayMillis > 0 ? initialDelayMillis : periodMillis,
+        long periodMillis = TimeUnit.SECONDS.toMillis(periodSeconds);
+        if (periodSeconds > 0)
+            JMThread.runWithScheduleAtFixedRate(initialDelayMillis <= 0 ? periodMillis : initialDelayMillis,
                     periodMillis, this::updateResource);
-        }
+        else if (initialDelayMillis > 0)
+            JMThread.runWithSchedule(initialDelayMillis, this::updateResource);
     }
 
     /**
@@ -87,17 +90,27 @@ public class RestfulResourceStringUpdater {
      */
     public synchronized Optional<String> updateResource() {
         try {
-            return JMOptional.getOptional(JMRestfulResource.getStringWithRestOrClasspathOrFilePath(restfulResourceUrl))
-                    .filter(Predicate.not(s -> s.equals(cachedString))).map(this::updateJsonStringCache);
+            if (isUpdatedResource(JMRestfulResource.getStringWithRestOrClasspathOrFilePath(restfulResourceUrl)))
+                return JMOptional.getOptional(
+                                JMRestfulResource.getStringWithRestOrClasspathOrFilePath(restfulResourceUrl))
+                        .filter(this::isUpdatedResource).map(this::updateJsonStringCache);
+            JMLog.info(log, "updateResource");
+            return Optional.empty();
         } catch (Exception e) {
             return JMException.handleExceptionAndReturnEmptyOptional(log, e, "update", restfulResourceUrl);
         }
     }
 
-    private String updateJsonStringCache(String jsonStringCache) {
-        Optional.ofNullable(updateConsumer).ifPresent(consumer -> consumer.accept(jsonStringCache));
-        log.info("Updated Resource - bytes - {}, url - {}", jsonStringCache.getBytes().length, restfulResourceUrl);
-        return this.cachedString = jsonStringCache;
+    private boolean isUpdatedResource(String newResource) {
+        return JMOptional.getOptional(newResource).filter(r -> !r.equals(cachedString)).isPresent();
+    }
+
+    private String updateJsonStringCache(String updatedJsonString) {
+        Optional.ofNullable(updateConsumer).ifPresent(consumer -> consumer.accept(updatedJsonString));
+        log.info("Updated Resource - url - {}, bytes - {}, diff - {}", restfulResourceUrl,
+                updatedJsonString.getBytes().length, JMString.truncate(StringUtils.difference(this.cachedString,
+                        updatedJsonString), 1024));
+        return this.cachedString = updatedJsonString;
     }
 
     /**

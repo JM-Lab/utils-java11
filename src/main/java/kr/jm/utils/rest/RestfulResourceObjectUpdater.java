@@ -1,4 +1,4 @@
-package kr.jm.utils.helper.etc;
+package kr.jm.utils.rest;
 
 import kr.jm.utils.JMOptional;
 
@@ -24,7 +24,7 @@ public class RestfulResourceObjectUpdater<T> {
      * @param transformer        the transformer
      */
     public RestfulResourceObjectUpdater(String restfulResourceUrl, Function<String, T> transformer) {
-        this(restfulResourceUrl, 0, transformer);
+        this(restfulResourceUrl, 60, transformer);
     }
 
     /**
@@ -36,7 +36,7 @@ public class RestfulResourceObjectUpdater<T> {
      */
     public RestfulResourceObjectUpdater(String restfulResourceUrl, Function<String, T> transformer,
             Consumer<T> updateConsumer) {
-        this(restfulResourceUrl, 0, 0, transformer, updateConsumer);
+        this(restfulResourceUrl, 60, 0, transformer, updateConsumer);
     }
 
     /**
