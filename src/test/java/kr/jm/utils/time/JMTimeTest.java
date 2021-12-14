@@ -39,6 +39,32 @@ public class JMTimeTest {
     }
 
     @Test
+    public void testZoneIdOffset() {
+        ZoneOffset zoneOffset = this.jmTime.extractZoneOffset("Asia/Seoul");
+        System.out.println(zoneOffset);
+        assertEquals("+09:00", zoneOffset.getId());
+        zoneOffset = this.jmTime.extractZoneOffset("Europe/Berlin");
+        System.out.println(zoneOffset);
+        assertEquals("+01:00", zoneOffset.getId());
+        zoneOffset = this.jmTime.extractZoneOffset("Europe/London");
+        System.out.println(zoneOffset);
+        assertEquals("Z", zoneOffset.getId());
+        zoneOffset = this.jmTime.extractZoneOffset("UTC");
+        System.out.println(zoneOffset);
+        assertEquals("Z", zoneOffset.getId());
+        zoneOffset = this.jmTime.extractZoneOffset("GMT");
+        System.out.println(zoneOffset);
+        assertEquals("Z", zoneOffset.getId());
+        zoneOffset = this.jmTime.extractZoneOffset("US/Eastern");
+        System.out.println(zoneOffset);
+        assertEquals("-05:00", zoneOffset.getId());
+        zoneOffset = this.jmTime.extractZoneOffset("America/New_York");
+        System.out.println(zoneOffset);
+        assertEquals("-05:00", zoneOffset.getId());
+    }
+
+
+    @Test
     public void testChangeFormatAndTimeZone() {
         System.out.println(jmTime.getTime(TIMESTAMP1, INDEX_FORMAT, ASIA_SEOUL_ZONE_ID));
         assertTrue(

@@ -67,6 +67,9 @@ public class JMTime {
         dateTimeFormatZoneInfoPattern = Pattern.compile("[+|-][0-9]{4}$");
     }
 
+    public ZoneOffset extractZoneOffset(String zoneId) {
+        return ZoneId.of(zoneId).getRules().getOffset(Instant.now());
+    }
 
     /**
      * Gets locale.
@@ -550,7 +553,7 @@ public class JMTime {
      */
     public String getTimeAsIsoInstant(String timestampString, String timestampStringDateTimeFormat, ZoneId zoneId) {
         return Optional.ofNullable(zoneId).map(zId -> getTimeAsIsoInstant(
-                changeToEpochMillis(timestampString, timestampStringDateTimeFormat, zId)))
+                        changeToEpochMillis(timestampString, timestampStringDateTimeFormat, zId)))
                 .orElseGet(() -> getTimeAsIsoInstant(timestampString, timestampStringDateTimeFormat));
     }
 
@@ -587,7 +590,7 @@ public class JMTime {
     public String getTimeAsIsoInstantMills(String timestampString, String timestampStringDateTimeFormat,
             ZoneId zoneId) {
         return Optional.ofNullable(zoneId).map(zId -> getTimeAsIsoInstantMills(
-                changeToEpochMillis(timestampString, timestampStringDateTimeFormat, zId)))
+                        changeToEpochMillis(timestampString, timestampStringDateTimeFormat, zId)))
                 .orElseGet(() -> getTimeAsIsoInstant(timestampString, timestampStringDateTimeFormat));
     }
 
@@ -613,7 +616,7 @@ public class JMTime {
     public String getTimeAsOffsetDateTime(String timestampString, String timestampStringDateTimeFormat,
             ZoneOffset zoneOffset) {
         return Optional.ofNullable(zoneOffset).map(ZoneOffset::normalized).map(zoneId -> getOffsetDateTime(
-                changeToEpochMillis(timestampString, timestampStringDateTimeFormat, zoneId)).toString())
+                        changeToEpochMillis(timestampString, timestampStringDateTimeFormat, zoneId)).toString())
                 .orElseGet(() -> getTimeAsOffsetDateTime(timestampString, timestampStringDateTimeFormat));
     }
 
