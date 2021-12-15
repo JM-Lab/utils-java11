@@ -1,5 +1,7 @@
 package kr.jm.utils.helper;
 
+import kr.jm.utils.JMString;
+
 import java.util.*;
 import java.util.function.Function;
 import java.util.regex.Matcher;
@@ -33,7 +35,7 @@ public class JMRegex {
      * @param flag  the flag
      */
     public JMRegex(String regex, int flag) {
-        this.groupNameList = getMatchedPartList(getMatchedPartPattern().matcher(regex)).stream()
+        this.groupNameList = getFindPartList(getMatchedPartPattern().matcher(regex)).stream()
                 .map(s -> s.substring(s.indexOf('<') + 1, s.indexOf('>'))).collect(toList());
         this.pattern = flag == -1 ? Pattern.compile(regex) : Pattern.compile(regex, flag);
     }
@@ -91,20 +93,43 @@ public class JMRegex {
     }
 
     /**
-     * Gets matched part list.
+     * Gets find part list.
      *
      * @param targetString the target string
-     * @return the matched part list
+     * @return the find part list
      */
-    public List<String> getMatchedPartList(String targetString) {
-        return getMatchedPartList(pattern.matcher(targetString));
+    public List<String> getFindPartList(String targetString) {
+        return getFindPartList(pattern.matcher(targetString));
     }
 
-    private List<String> getMatchedPartList(Matcher matcher) {
-        List<String> matchedList = new ArrayList<>();
+    private List<String> getFindPartList(Matcher matcher) {
+        List<String> partList = new ArrayList<>();
         while (matcher.find())
-            matchedList.add(matcher.group());
-        return matchedList;
+            partList.add(matcher.group());
+        return partList;
+    }
+
+    /**
+     * Gets find group name value map.
+     *
+     * @param targetString the target string
+     * @return the find group name value map
+     */
+    public Map<String, String> getFindGroupNameValueMap(String targetString) {
+        return getFindGroupNameValueMap(pattern.matcher(targetString), new HashMap<>(), new ArrayList<>(groupNameList));
+    }
+
+    private Map<String, String> getFindGroupNameValueMap(Matcher matcher, Map<String, String> groupNameValueMap,
+            List<String> groupNameList) {
+        while (matcher.find())
+            for (int i = 0; i < groupNameList.size(); i++) {
+                String value = matcher.group(groupNameList.get(i));
+                if (JMString.isNotNullOrEmpty(value)) {
+                    groupNameValueMap.put(groupNameList.remove(i), value);
+                    break;
+                }
+            }
+        return groupNameValueMap;
     }
 
     /**

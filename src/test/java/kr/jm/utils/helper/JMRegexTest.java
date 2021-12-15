@@ -23,10 +23,21 @@ public class JMRegexTest {
     }
 
     @Test
-    public void testGetMatchedPartList() {
-        List<String> matchedList = new JMRegex("\\w").getMatchedPartList(testString);
+    public void testGetFindPartList() {
+        List<String> matchedList = new JMRegex("\\w").getFindPartList(testString);
         System.out.println(matchedList);
         assertEquals(testString.toCharArray().length - 7, matchedList.size());
+    }
+
+    @Test
+    public void testGetGroupNameValueMap() {
+        // | 를 사용해서 여러 패턴의 이름으로 넣어서 구함 앞의 패턴에 일치하면 뒤에 것은 나오지 않음
+        JMRegex jmRegex = new JMRegex("(?<n1>a\\w+)|(?<n2>b\\w+)|(?<n3>\\w+)|(?<n4>\\w+CC)|(?<n5>\\w+A)|" +
+                "(?<n6>\\w+)");
+        Map<String, String> groupNameValueMap = jmRegex.getFindGroupNameValueMap(testString);
+        System.out.println(groupNameValueMap);
+        assertEquals("{n1=abCC, n2=bbA}", groupNameValueMap.toString());
+        assertEquals(2, groupNameValueMap.size());
     }
 
     @Test
