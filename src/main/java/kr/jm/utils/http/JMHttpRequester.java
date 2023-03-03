@@ -1,11 +1,8 @@
 package kr.jm.utils.http;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import kr.jm.utils.JMInputStream;
 import kr.jm.utils.JMString;
 import kr.jm.utils.exception.JMException;
-import kr.jm.utils.helper.JMJson;
-import org.apache.http.Header;
+import kr.jm.utils.helper.JMLog;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -34,7 +31,6 @@ import static java.util.stream.Collectors.*;
  */
 public class JMHttpRequester {
     private static final Logger log = org.slf4j.LoggerFactory.getLogger(JMHttpRequester.class);
-    private static final Charset UTF_8 = Charset.forName(JMInputStream.UTF_8);
     private CloseableHttpClient HttpClient;
 
     /**
@@ -51,30 +47,13 @@ public class JMHttpRequester {
     }
 
     /**
-     * Gets rest api response as object.
-     *
-     * @param <T>           the type parameter
-     * @param uri           the uri
-     * @param typeReference the type reference
-     * @return the rest api response as object
-     */
-    public <T> T getRestApiResponseAsObject(String uri, TypeReference<T> typeReference) {
-        try {
-            return JMJson.getInstance().withJsonString(getResponseAsString(uri), typeReference);
-        } catch (Exception e) {
-            throw JMException.handleExceptionAndReturnRuntimeEx(log, e,
-                    "getRestApiResponseAsObject", uri, typeReference);
-        }
-    }
-
-    /**
      * Gets response as string.
      *
      * @param uri the uri
      * @return the response as string
      */
     public String getResponseAsString(String uri) {
-        return request(new HttpGet(uri));
+        return getResponseAsString(Map.of(), uri);
     }
 
     /**
@@ -85,33 +64,150 @@ public class JMHttpRequester {
      * @return the response as string
      */
     public String getResponseAsString(String uri, String charsetName) {
-        return request(new HttpGet(uri), charsetName);
-    }
-
-
-    /**
-     * Gets response as string.
-     *
-     * @param uri    the uri
-     * @param header the header
-     * @return the response as string
-     */
-    public String getResponseAsString(URI uri, Header header) {
-        return getResponseAsString(uri.toString(), header);
+        return getResponseAsString(Map.of(), uri, charsetName);
     }
 
     /**
      * Gets response as string.
      *
-     * @param uri    the uri
-     * @param header the header
+     * @param uri      the uri
+     * @param paramMap the param map
      * @return the response as string
      */
-    public String getResponseAsString(String uri, Header header) {
+    public String getResponseAsString(String uri, Map<String, String> paramMap) {
+        return getResponseAsString(Map.of(), uri, paramMap);
+    }
+
+    /**
+     * Gets response as string.
+     *
+     * @param uri         the uri
+     * @param paramMap    the param map
+     * @param charsetName the charset name
+     * @return the response as string
+     */
+    public String getResponseAsString(String uri, Map<String, String> paramMap, String charsetName) {
+        return getResponseAsString(Map.of(), uri, paramMap, charsetName);
+    }
+
+    /**
+     * Gets response as string.
+     *
+     * @param headerMap the header map
+     * @param uri       the uri
+     * @return the response as string
+     */
+    public String getResponseAsString(Map<String, String> headerMap, String uri) {
+        return getResponseAsString(headerMap, uri, Map.of());
+    }
+
+    /**
+     * Gets response as string.
+     *
+     * @param headerMap   the header map
+     * @param uri         the uri
+     * @param charsetName the charset name
+     * @return the response as string
+     */
+    public String getResponseAsString(Map<String, String> headerMap, String uri, String charsetName) {
+        return getResponseAsString(headerMap, uri, Map.of(), charsetName);
+    }
+
+    /**
+     * Gets response as string.
+     *
+     * @param headerMap the header map
+     * @param uri       the uri
+     * @param paramMap  the param map
+     * @return the response as string
+     */
+    public String getResponseAsString(Map<String, String> headerMap, String uri, Map<String, String> paramMap) {
+        return getResponseAsString(headerMap, uri, paramMap, Charset.defaultCharset());
+    }
+
+    /**
+     * Gets response as string.
+     *
+     * @param headerMap   the header map
+     * @param uri         the uri
+     * @param paramMap    the param map
+     * @param charsetName the charset name
+     * @return the response as string
+     */
+    public String getResponseAsString(Map<String, String> headerMap, String uri, Map<String, String> paramMap,
+            String charsetName) {
+        return buildResponseAsString(buildGetRequest(headerMap, uri, paramMap), Charset.forName(charsetName));
+    }
+
+    /**
+     * Gets response as string.
+     *
+     * @param headerMap the header map
+     * @param uri       the uri
+     * @param paramMap  the param map
+     * @param charset   the charset
+     * @return the response as string
+     */
+    public String getResponseAsString(Map<String, String> headerMap, String uri, Map<String, String> paramMap,
+            Charset charset) {
+        return buildResponseAsString(buildGetRequest(headerMap, uri, paramMap), charset);
+    }
+
+    /**
+     * Build get request http get.
+     *
+     * @param uri the uri
+     * @return the http get
+     */
+    public HttpGet buildGetRequest(String uri) {
+        return buildGetRequest(Map.of(), uri);
+    }
+
+    /**
+     * Build get request http get.
+     *
+     * @param headerMap the header map
+     * @param uri       the uri
+     * @return the http get
+     */
+    public HttpGet buildGetRequest(Map<String, String> headerMap, String uri) {
+        return buildGetRequest(headerMap, uri, Map.of());
+    }
+
+    /**
+     * Build get request http get.
+     *
+     * @param uri      the uri
+     * @param paramMap the param map
+     * @return the http get
+     */
+    public HttpGet buildGetRequest(String uri, Map<String, String> paramMap) {
+        return buildGetRequest(Map.of(), buildUri(uri, paramMap));
+    }
+
+    /**
+     * Build get request http get.
+     *
+     * @param headerMap the header map
+     * @param uri       the uri
+     * @param paramMap  the param map
+     * @return the http get
+     */
+    public HttpGet buildGetRequest(Map<String, String> headerMap, String uri, Map<String, String> paramMap) {
+        return buildGetRequest(headerMap, buildUri(uri, paramMap));
+    }
+
+    /**
+     * Build get request http get.
+     *
+     * @param headerMap the header map
+     * @param uri       the uri
+     * @return the http get
+     */
+    public HttpGet buildGetRequest(Map<String, String> headerMap, URI uri) {
         HttpGet httpGet = new HttpGet(uri);
-        httpGet.setHeader(header);
-        request(httpGet);
-        return request(httpGet);
+        headerMap.forEach(httpGet::addHeader);
+        return httpGet;
     }
 
     /**
@@ -126,121 +222,233 @@ public class JMHttpRequester {
     public URI buildUri(String httpOrHttps, String host, String path, Map<String, String> paramMap) {
         try {
             return new URIBuilder().setScheme(httpOrHttps).setHost(host).setPath(path)
-                    .setParameters(buildNameValuePareList(paramMap)).build();
+                    .setParameters(buildNameValueParamList(paramMap)).build();
         } catch (URISyntaxException e) {
-            throw JMException.handleExceptionAndReturnRuntimeEx(log, e, "getResponseAsString", httpOrHttps, host, path,
+            throw JMException.handleExceptionAndReturnRuntimeEx(log, e, "buildUri", httpOrHttps, host, path,
                     paramMap);
         }
     }
 
     /**
-     * Build name value pare list list.
+     * Build uri uri.
      *
-     * @param keyValueMap the key value map
-     * @return the list
+     * @param uri      the uri
+     * @param paramMap the param map
+     * @return the uri
      */
-    public List<NameValuePair> buildNameValuePareList(Map<String, String> keyValueMap) {
-        return keyValueMap.entrySet().stream().map(entry -> new BasicNameValuePair(entry.getKey(), entry.getValue()))
+    public URI buildUri(String uri, Map<String, String> paramMap) {
+        try {
+            return new URIBuilder(uri).setParameters(buildNameValueParamList(paramMap)).build();
+        } catch (URISyntaxException e) {
+            throw JMException.handleExceptionAndReturnRuntimeEx(log, e, "buildUri", uri, paramMap);
+        }
+    }
+
+    private List<NameValuePair> buildNameValueParamList(Map<String, String> paramMap) {
+        return paramMap.entrySet().stream().map(entry -> new BasicNameValuePair(entry.getKey(), entry.getValue()))
                 .collect(toList());
     }
 
+
     /**
      * Post response as string string.
      *
-     * @param uri        the uri
-     * @param header     the header
-     * @param httpEntity the http entity
+     * @param uri  the uri
+     * @param body the body
      * @return the string
      */
-    public String postResponseAsString(URI uri, Header header, HttpEntity httpEntity) {
-        return postResponseAsString(uri.toString(), header, httpEntity);
+    public String postResponseAsString(String uri, String body) {
+        return postResponseAsString(Map.of(), uri, body);
     }
 
     /**
      * Post response as string string.
      *
-     * @param uri        the uri
-     * @param header     the header
-     * @param httpEntity the http entity
+     * @param uri         the uri
+     * @param body        the body
+     * @param charsetName the charset name
      * @return the string
      */
-    public String postResponseAsString(String uri, Header header, HttpEntity httpEntity) {
+    public String postResponseAsString(String uri, String body, String charsetName) {
+        return postResponseAsString(Map.of(), uri, body, charsetName);
+    }
+
+    /**
+     * Post response as string string.
+     *
+     * @param headerMap the header map
+     * @param uri       the uri
+     * @param body      the body
+     * @return the string
+     */
+    public String postResponseAsString(Map<String, String> headerMap, String uri, String body) {
+        return postResponseAsString(headerMap, uri, Map.of(), body);
+    }
+
+    /**
+     * Post response as string string.
+     *
+     * @param headerMap   the header map
+     * @param uri         the uri
+     * @param body        the body
+     * @param charsetName the charset name
+     * @return the string
+     */
+    public String postResponseAsString(Map<String, String> headerMap, String uri, String body, String charsetName) {
+        return postResponseAsString(headerMap, uri, Map.of(), body, charsetName);
+    }
+
+    /**
+     * Post response as string string.
+     *
+     * @param uri      the uri
+     * @param paramMap the param map
+     * @param body     the body
+     * @return the string
+     */
+    public String postResponseAsString(String uri, Map<String, String> paramMap, String body) {
+        return postResponseAsString(Map.of(), uri, paramMap, body);
+    }
+
+    /**
+     * Post response as string string.
+     *
+     * @param uri         the uri
+     * @param paramMap    the param map
+     * @param body        the body
+     * @param charsetName the charset name
+     * @return the string
+     */
+    public String postResponseAsString(String uri, Map<String, String> paramMap, String body, String charsetName) {
+        return postResponseAsString(Map.of(), uri, paramMap, body, charsetName);
+    }
+
+    /**
+     * Post response as string string.
+     *
+     * @param headerMap the header map
+     * @param uri       the uri
+     * @param paramMap  the param map
+     * @param body      the body
+     * @return the string
+     */
+    public String postResponseAsString(Map<String, String> headerMap, String uri, Map<String, String> paramMap,
+            String body) {
+        return postResponseAsString(headerMap, uri, paramMap, body, Charset.defaultCharset());
+    }
+
+
+    /**
+     * Post response as string string.
+     *
+     * @param headerMap   the header map
+     * @param uri         the uri
+     * @param paramMap    the param map
+     * @param body        the body
+     * @param charsetName the charset name
+     * @return the string
+     */
+    public String postResponseAsString(Map<String, String> headerMap, String uri,
+            Map<String, String> paramMap, String body, String charsetName) {
+        return postResponseAsString(headerMap, uri, paramMap, body, Charset.forName(charsetName));
+    }
+
+    /**
+     * Post response as string string.
+     *
+     * @param headerMap the header map
+     * @param uri       the uri
+     * @param paramMap  the param map
+     * @param body      the body
+     * @param charset   the charset
+     * @return the string
+     */
+    public String postResponseAsString(Map<String, String> headerMap, String uri,
+            Map<String, String> paramMap, String body, Charset charset) {
+        return buildResponseAsString(buildPostRequest(headerMap, uri, paramMap, new StringEntity(body, charset)),
+                charset);
+    }
+
+    /**
+     * Build post request http post.
+     *
+     * @param headerMap      the header map
+     * @param uri            the uri
+     * @param paramMap       the param map
+     * @param bodyHttpEntity the body http entity
+     * @return the http post
+     */
+    public HttpPost buildPostRequest(Map<String, String> headerMap, String uri, Map<String, String> paramMap,
+            HttpEntity bodyHttpEntity) {
+        return buildPostRequest(headerMap, buildUri(uri, paramMap), bodyHttpEntity);
+    }
+
+    /**
+     * Build post request http post.
+     *
+     * @param headerMap      the header map
+     * @param uri            the uri
+     * @param bodyHttpEntity the body http entity
+     * @return the http post
+     */
+    public HttpPost buildPostRequest(Map<String, String> headerMap, URI uri, HttpEntity bodyHttpEntity) {
         HttpPost httpPost = new HttpPost(uri);
-        httpPost.setHeader(header);
-        httpPost.setEntity(httpEntity);
-        return request(httpPost);
+        headerMap.forEach(httpPost::addHeader);
+        httpPost.setEntity(bodyHttpEntity);
+        return httpPost;
     }
 
     /**
-     * Build http entity string entity.
+     * Build post request http post.
      *
-     * @param object the object
-     * @return the string entity
+     * @param headerMap  the header map
+     * @param uri        the uri
+     * @param paramMap   the param map
+     * @param bodyString the body string
+     * @return the http post
      */
-    public StringEntity buildHttpEntity(Object object) {
-        return buildHttpEntity(JMJson.getInstance().toJsonString(object));
+    public HttpPost buildPostRequest(Map<String, String> headerMap, String uri, Map<String, String> paramMap,
+            String bodyString) {
+        return buildPostRequest(headerMap, uri, paramMap, buildStringEntity(bodyString));
     }
 
     /**
-     * Build http entity string entity.
+     * Build post request http post.
+     *
+     * @param headerMap  the header map
+     * @param uri        the uri
+     * @param bodyString the body string
+     * @return the http post
+     */
+    public HttpPost buildPostRequest(Map<String, String> headerMap, URI uri,
+            String bodyString) {
+        return buildPostRequest(headerMap, uri, buildStringEntity(bodyString));
+    }
+
+    private String buildResponseAsString(HttpUriRequest httpUriRequest, Charset charset) {
+        try (CloseableHttpResponse response = execute(httpUriRequest)) {
+            return EntityUtils.toString(response.getEntity(), charset);
+        } catch (IOException e) {
+            return JMException.handleExceptionAndReturnNull(log, e, "buildResponseAsString", httpUriRequest);
+        }
+    }
+
+    private CloseableHttpResponse handleFinalResponse(CloseableHttpResponse response) {
+        int statusCode = response.getStatusLine().getStatusCode();
+        if (statusCode >= 200 && statusCode < 300)
+            return response;
+        throw new IllegalStateException(response.getStatusLine().getStatusCode() + JMString.SPACE +
+                response.getStatusLine().getReasonPhrase());
+    }
+
+    /**
+     * Build string entity string entity.
      *
      * @param string the string
      * @return the string entity
      */
-    public StringEntity buildHttpEntity(String string) {
-        return buildHttpEntity(string, UTF_8);
-    }
-
-    /**
-     * Build http entity string entity.
-     *
-     * @param string  the string
-     * @param charset the charset
-     * @return the string entity
-     */
-    public StringEntity buildHttpEntity(String string, Charset charset) {
-        return new StringEntity(string, charset);
-    }
-
-    /**
-     * Request string.
-     *
-     * @param httpUriRequest the http uri request
-     * @return the string
-     */
-    public String request(HttpUriRequest httpUriRequest) {
-        return request(httpUriRequest, Charset.defaultCharset());
-    }
-
-    /**
-     * Request string.
-     *
-     * @param httpUriRequest the http uri request
-     * @param charSetName    the char set name
-     * @return the string
-     */
-    public String request(HttpUriRequest httpUriRequest, String charSetName) {
-        return request(httpUriRequest, Charset.forName(charSetName));
-    }
-
-    /**
-     * Request string.
-     *
-     * @param httpUriRequest the http uri request
-     * @param charSet        the char set
-     * @return the string
-     */
-    public String request(HttpUriRequest httpUriRequest, Charset charSet) {
-        try (CloseableHttpResponse response = getHttpClient().execute(httpUriRequest)) {
-            HttpEntity httpEntity = response.getEntity();
-            int statusCode = response.getStatusLine().getStatusCode();
-            if (statusCode >= 200 && statusCode < 300)
-                return EntityUtils.toString(httpEntity, charSet);
-            throw new IllegalStateException(response.getStatusLine().getStatusCode() + JMString.SPACE +
-                    response.getStatusLine().getReasonPhrase());
-        } catch (IOException e) {
-            throw JMException.handleExceptionAndReturnRuntimeEx(log, e, "request", httpUriRequest);
-        }
+    public StringEntity buildStringEntity(String string) {
+        return new StringEntity(string, Charset.defaultCharset());
     }
 
     /**
@@ -260,6 +468,18 @@ public class JMHttpRequester {
      */
     public CloseableHttpClient setHttpClient(CloseableHttpClient httpClient) {
         return HttpClient = httpClient;
+    }
+
+    /**
+     * Execute closeable http response.
+     *
+     * @param httpUriRequest the http uri request
+     * @return the closeable http response
+     * @throws IOException the io exception
+     */
+    public CloseableHttpResponse execute(HttpUriRequest httpUriRequest) throws IOException {
+        JMLog.debug(log, "execute", httpUriRequest);
+        return handleFinalResponse(getHttpClient().execute(httpUriRequest));
     }
 
 }
