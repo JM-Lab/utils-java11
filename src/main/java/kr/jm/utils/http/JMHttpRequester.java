@@ -238,7 +238,7 @@ public class JMHttpRequester {
      */
     public URI buildUri(String uri, Map<String, String> paramMap) {
         try {
-            return new URIBuilder(uri).setParameters(buildNameValueParamList(paramMap)).build();
+            return new URIBuilder(uri).addParameters(buildNameValueParamList(paramMap)).build();
         } catch (URISyntaxException e) {
             throw JMException.handleExceptionAndReturnRuntimeEx(log, e, "buildUri", uri, paramMap);
         }
