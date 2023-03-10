@@ -327,7 +327,7 @@ public class JMPath {
      * @return the path
      */
     public Path getPath(String path) {
-        return FileSystems.getDefault().getPath(path).toAbsolutePath();
+        return Paths.get(path).toAbsolutePath();
     }
 
     /**
