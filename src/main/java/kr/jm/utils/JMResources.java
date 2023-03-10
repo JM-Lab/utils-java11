@@ -115,8 +115,12 @@ public interface JMResources {
      * @return the file resource input stream
      */
     static InputStream getFileResourceInputStream(String path) {
-        return JMOptional.getOptional(path).map(JMPath.getInstance()::getPath).map(JMResources::newFileInputStream)
-                .orElse(null);
+        return JMOptional.getOptional(path).map(JMPath.getInstance()::getPath).filter(Files::exists)
+                .map(JMResources::newFileInputStream).orElse(null);
+    }
+
+    static InputStream getFileOrClasspathResourceInputStream(String path) {
+        return Optional.ofNullable(getFileResourceInputStream(path)).orElseGet(() -> getResourceInputStream(path));
     }
 
     private static InputStream newFileInputStream(Path path) {

@@ -3,6 +3,8 @@ package kr.jm.utils;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 public class JMResourcesTest {
@@ -22,5 +24,11 @@ public class JMResourcesTest {
     public void testReadLinesForZip() {
         List<String> linesForZip = JMResources.readLinesForZip("src/test/resources/test.zip", "test/test.txt");
         Assert.assertEquals("[hello]", linesForZip.toString());
+    }
+
+    @Test
+    public void getFileOrClasspathResourceInputStream() throws IOException {
+        InputStream license = JMResources.getFileOrClasspathResourceInputStream("LICENSE");
+        Assert.assertEquals(11311, license.readAllBytes().length);
     }
 }
