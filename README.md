@@ -1,7 +1,7 @@
 JMLab Java 11 Utility Libraries
 ==============================
 ## version
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/kr.jmlab/jmlab-utils-java11/badge.svg)](http://search.maven.org/#artifactdetails%7Ckr.jmlab%7Cjmlab-utils-java11%7C0.1.4%7Cjar)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/kr.jmlab/jmlab-utils-java11/badge.svg)](http://search.maven.org/#artifactdetails%7Ckr.jmlab%7Cjmlab-utils-java11%7C0.1.4.1%7Cjar)
 
 ## Prerequisites:
 * Java 11 or later
@@ -9,14 +9,14 @@ JMLab Java 11 Utility Libraries
 ## Usage
 Gradle:
 ```groovy
-compile 'kr.jmlab:jmlab-utils-java11:0.1.4'
+compile 'kr.jmlab:jmlab-utils-java11:0.1.4.1'
 ```
 Maven:
 ```xml
 <dependency>
     <groupId>kr.jmlab</groupId>
     <artifactId>jmlab-utils-java11</artifactId>
-    <version>0.1.4</version>
+    <version>0.1.4.1</version>
 </dependency>
 ```
 
@@ -25,7 +25,7 @@ Checkout the source code:
 
     git clone https://github.com/JM-Lab/utils-java11.git
     cd utils-java11
-    git checkout -b 0.1.4 origin/0.1.4
+    git checkout -b 0.1.4.1 origin/0.1.4.1
     mvn install
 
 ## Useful Utilities With Features Of Java 11  :

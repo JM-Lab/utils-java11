@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>kr.jmlab</groupId>
     <artifactId>jmlab-utils-java11</artifactId>
-    <version>0.1.4</version>
+    <version>0.1.4.1</version>
     <packaging>jar</packaging>
     <name>JMLab-Utils-Java11</name>
     <description>Java 11 Utility Libraries</description>
