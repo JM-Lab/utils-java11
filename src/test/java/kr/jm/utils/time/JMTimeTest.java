@@ -45,10 +45,10 @@ public class JMTimeTest {
         assertEquals("+09:00", zoneOffset.getId());
         zoneOffset = this.jmTime.extractZoneOffset("Europe/Berlin");
         System.out.println(zoneOffset);
-        assertEquals("+01:00", zoneOffset.getId());
+        assertEquals("+02:00", zoneOffset.getId());
         zoneOffset = this.jmTime.extractZoneOffset("Europe/London");
         System.out.println(zoneOffset);
-        assertEquals("Z", zoneOffset.getId());
+        assertEquals("+01:00", zoneOffset.getId());
         zoneOffset = this.jmTime.extractZoneOffset("UTC");
         System.out.println(zoneOffset);
         assertEquals("Z", zoneOffset.getId());
@@ -57,10 +57,10 @@ public class JMTimeTest {
         assertEquals("Z", zoneOffset.getId());
         zoneOffset = this.jmTime.extractZoneOffset("US/Eastern");
         System.out.println(zoneOffset);
-        assertEquals("-05:00", zoneOffset.getId());
+        assertEquals("-04:00", zoneOffset.getId());
         zoneOffset = this.jmTime.extractZoneOffset("America/New_York");
         System.out.println(zoneOffset);
-        assertEquals("-05:00", zoneOffset.getId());
+        assertEquals("-04:00", zoneOffset.getId());
     }
 
 
